@@ -71,6 +71,11 @@ func ShortUrlHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if !isValidURL(data.URL) {
+		http.Error(w, "Invalid URL", http.StatusBadRequest)
+		return
+	}
+
 	shortURL, err := createUrl(data.URL)
 	if err != nil {
 		http.Error(w, "Failed to create short URL", http.StatusInternalServerError)
