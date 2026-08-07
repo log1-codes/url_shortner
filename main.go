@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
@@ -8,6 +9,8 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/jackc/pgx/v5"
 )
 
 type URL struct {
@@ -17,43 +20,41 @@ type URL struct {
 	CreationDate time.Time `json:"creation_date"`
 }
 
-var urlDB = make(map[string]URL)
+var db *pgx.Conn
 
-func generateShortUrl(OriginalUrl string) string {
+func generateShortUrl(originalUrl string) string {
 	hasher := md5.New()
-	hasher.Write([]byte(OriginalUrl)) // it converts the originalURL string to a byte slice
-
-	fmt.Println("hasher:", hasher)
-
-	data := hasher.Sum(nil)
-	fmt.Println("hasher data", data)
-
-	hash := hex.EncodeToString(data)
-	fmt.Println("EncodeToString", hash)
-
-	fmt.Println("final String", hash[:8])
+	hasher.Write([]byte(originalUrl))
+	hash := hex.EncodeToString(hasher.Sum(nil))
 	return hash[:8]
-
 }
-func createUrl(OriginalUrl string) string {
-	shortUrl := generateShortUrl(OriginalUrl)
-	id := shortUrl //using short url as the id just for keeping it simple
 
-	urlDB[id] = URL{
-		ID:           id,
-		OriginalUrl:  OriginalUrl,
-		ShortUrl:     shortUrl,
-		CreationDate: time.Now(),
+func createUrl(originalUrl string) (string, error) {
+	shortUrl := generateShortUrl(originalUrl)
+	id := shortUrl
+
+	_, err := db.Exec(context.Background(),
+		`INSERT INTO urls (id, original_url, short_url, creation_date) VALUES ($1, $2, $3, $4)`,
+		id, originalUrl, shortUrl, time.Now(),
+	)
+	if err != nil {
+		return "", err
 	}
-	return shortUrl
+	return shortUrl, nil
 }
 
 func getUrl(id string) (URL, error) {
-	url, ok := urlDB[id]
-	if !ok {
-		return URL{}, errors.New("URL not found")
+	var url URL
+	err := db.QueryRow(context.Background(),
+		`SELECT id, original_url, short_url, creation_date FROM urls WHERE id = $1`,
+		id,
+	).Scan(&url.ID, &url.OriginalUrl, &url.ShortUrl, &url.CreationDate)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return URL{}, errors.New("URL not found")
+		}
+		return URL{}, err
 	}
-
 	return url, nil
 }
 
@@ -65,17 +66,20 @@ func ShortUrlHandler(w http.ResponseWriter, r *http.Request) {
 	var data struct {
 		URL string `json:"url"`
 	}
-	err := json.NewDecoder(r.Body).Decode(&data)
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		http.Error(w, "Invalid Request Body", http.StatusBadRequest)
 		return
 	}
-	shortURL_ := createUrl(data.URL)
-	// fmt.Fprintf(w, shortURL)
+
+	shortURL, err := createUrl(data.URL)
+	if err != nil {
+		http.Error(w, "Failed to create short URL", http.StatusInternalServerError)
+		return
+	}
 
 	response := struct {
 		ShortURL string `json:"short_url"`
-	}{ShortURL: shortURL_}
+	}{ShortURL: shortURL}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
@@ -85,26 +89,21 @@ func redirectURLHandler(w http.ResponseWriter, r *http.Request) {
 	url, err := getUrl(id)
 	if err != nil {
 		http.Error(w, "Invalid Request", http.StatusNotFound)
+		return
 	}
 	http.Redirect(w, r, url.OriginalUrl, http.StatusFound)
 }
+
 func main() {
-	// fmt.Println("starting url shortner")
-	// OriginalUrl := "https://anurag.engineer"
-
-	// generateShortUrl(OriginalUrl)
-
-	//register the handler function to handle all requests to the root url("/")
+	db = connectDB()
+	defer db.Close(context.Background())
 
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/shorten", ShortUrlHandler)
 	http.HandleFunc("/redirect/", redirectURLHandler)
-	//start the http server on port 3000
-	fmt.Println("Starting server on port 3000.........")
 
-	err := http.ListenAndServe(":3000", nil)
-	if err != nil {
+	fmt.Println("Starting server on port 3000.........")
+	if err := http.ListenAndServe(":3000", nil); err != nil {
 		fmt.Println("error on starting server", err)
 	}
-
 }
