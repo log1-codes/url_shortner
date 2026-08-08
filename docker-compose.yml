@@ -16,6 +16,16 @@ services:
       interval: 5s
       timeout: 5s 
       retries: 5 
+  app:
+    build: .
+    container_name: url_shortner_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://urlshortner:urlshortner@postgres:5432/urlshortner?sslmode=disable
+    depends_on:
+      - postgres
   
 volumes:
   postgres_data:
