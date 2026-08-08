@@ -24,6 +24,7 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: postgres://urlshortner:urlshortner@postgres:5432/urlshortner?sslmode=disable
+      JWT_SECRET: somethingsupersecretvalue
     depends_on:
       - postgres
   

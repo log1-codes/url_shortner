@@ -6,7 +6,6 @@ import (
     "encoding/hex"
     "errors"
     "time"
-
     "github.com/jackc/pgx/v5"
 )
 
@@ -17,7 +16,7 @@ type URL struct {
     CreationDate time.Time `json:"creation_date"`
 }
 
-func generateShortURL(originalUrl string) string {
+func GenerateShortURL(originalUrl string) string {
     hasher := md5.New()
     hasher.Write([]byte(originalUrl))
     hash := hex.EncodeToString(hasher.Sum(nil))
@@ -47,7 +46,7 @@ func CreateURL(originalUrl string) (string, error) {
     if err.Error() != "URL not found" {
         return "", err
     }
-    shortUrl := generateShortURL(originalUrl)
+    shortUrl := GenerateShortURL(originalUrl)
     id := shortUrl
     _, err = DB.Exec(context.Background(),
         `INSERT INTO urls (id, original_url, short_url, creation_date) VALUES ($1, $2, $3, $4)`,
