@@ -203,7 +203,7 @@ function App() {
               {!isAuthenticated ? (
                 <>
                   <button className="btn-primary" onClick={()=>setPage("signup")} >
-                  <span>HMR IS WORKING 123</span>
+                  <span>Get Started</span>
                     <ArrowRight size={16} />
                   </button>
                   <button className="btn-secondary" onClick={() => setPage('login')}>
