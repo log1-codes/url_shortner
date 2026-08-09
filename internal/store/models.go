@@ -15,6 +15,7 @@ type Link struct {
     OriginalURL string    `json:"original_url"`
     ShortURL    string    `json:"short_url"`
     CreatedAt   time.Time `json:"created_at"`
+    Clicks      int       `json:"clicks"`
 }
 
 type Click struct {

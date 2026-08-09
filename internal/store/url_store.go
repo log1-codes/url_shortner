@@ -1,12 +1,12 @@
 package store
 
 import (
-    "context"
-    "crypto/md5"
-    "encoding/hex"
-    "errors"
-    "time"
-    "github.com/jackc/pgx/v5"
+	"context"
+	"crypto/rand"
+	"errors"
+	"time"
+
+	"github.com/jackc/pgx/v5"
 )
 
 type URL struct {
@@ -16,17 +16,28 @@ type URL struct {
     CreationDate time.Time `json:"creation_date"`
 }
 
-func GenerateShortURL(originalUrl string) string {
-    hasher := md5.New()
-    hasher.Write([]byte(originalUrl))
-    hash := hex.EncodeToString(hasher.Sum(nil))
-    return hash[:8]
+const (
+	shortCodeLength = 10
+	shortCodeChars  = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+)
+
+func GenerateShortURL() (string, error) {
+	buf := make([]byte, shortCodeLength)
+	if _, err := rand.Read(buf); err != nil {
+		return "", err
+	}
+
+	for i := range buf {
+		buf[i] = shortCodeChars[int(buf[i])%len(shortCodeChars)]
+	}
+
+	return string(buf), nil
 }
 
-func GetURLByOriginal(originalUrl string) (URL, error) {
+func GetURLByOriginal(ctx context.Context, originalUrl string) (URL, error) {
     var u URL
 
-    err := DB.QueryRow(context.Background(),
+    err := DB.QueryRow(ctx,
         `SELECT id, original_url, short_url, creation_date FROM urls WHERE original_url = $1`,
         originalUrl).Scan(&u.ID, &u.OriginalUrl, &u.ShortUrl, &u.CreationDate)
     if err != nil {
@@ -38,17 +49,20 @@ func GetURLByOriginal(originalUrl string) (URL, error) {
     return u, nil
 }
 
-func CreateURL(originalUrl string) (string, error) {
-    existing, err := GetURLByOriginal(originalUrl)
+func CreateURL(ctx context.Context, originalUrl string) (string, error) {
+    existing, err := GetURLByOriginal(ctx, originalUrl)
     if err == nil {
         return existing.ShortUrl, nil
     }
     if err.Error() != "URL not found" {
         return "", err
     }
-    shortUrl := GenerateShortURL(originalUrl)
+    shortUrl, err := GenerateShortURL()
+    if err != nil {
+        return "", err
+    }
     id := shortUrl
-    _, err = DB.Exec(context.Background(),
+    _, err = DB.Exec(ctx,
         `INSERT INTO urls (id, original_url, short_url, creation_date) VALUES ($1, $2, $3, $4)`,
         id, originalUrl, shortUrl, time.Now(),
     )
@@ -58,9 +72,9 @@ func CreateURL(originalUrl string) (string, error) {
     return shortUrl, nil
 }
 
-func GetURL(id string) (URL, error) {
+func GetURL(ctx context.Context, id string) (URL, error) {
     var u URL
-    err := DB.QueryRow(context.Background(),
+    err := DB.QueryRow(ctx,
         `SELECT id, original_url, short_url, creation_date FROM urls WHERE id = $1`,
         id,
     ).Scan(&u.ID, &u.OriginalUrl, &u.ShortUrl, &u.CreationDate)
