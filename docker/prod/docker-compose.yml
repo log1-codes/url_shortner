@@ -5,11 +5,14 @@ services:
       dockerfile: docker/prod/backend.Dockerfile
     container_name: url_shortner_prod_backend
     restart: unless-stopped
+
     environment:
       DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+
     expose:
       - "3000"
+
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:3000/healthz >/dev/null || exit 1"]
       interval: 10s
@@ -22,11 +25,17 @@ services:
       dockerfile: docker/prod/frontend.Dockerfile
     container_name: url_shortner_prod_frontend
     restart: unless-stopped
+
     ports:
       - "80:80"
+
     depends_on:
       backend:
         condition: service_healthy
+
+    environment:
+      BACKEND_HOST: backend:3000
+
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost/ >/dev/null || exit 1"]
       interval: 10s
