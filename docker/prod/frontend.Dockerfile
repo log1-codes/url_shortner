@@ -13,7 +13,8 @@ RUN npm run build
 
 FROM nginx:1.27-alpine
 
-ENV NGINX_ENVSUBST_FILTER=BACKEND_HOST
+ENV NGINX_ENVSUBST_FILTER=BACKEND
+ENV BACKEND_SCHEME=https
 
 COPY web/nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=builder /app/dist /usr/share/nginx/html

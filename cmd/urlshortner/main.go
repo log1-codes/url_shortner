@@ -45,7 +45,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:              ":3000",
-		Handler:           mux,
+		Handler:           app.CORSMiddleware(mux),
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       10 * time.Second,
 		WriteTimeout:      15 * time.Second,
