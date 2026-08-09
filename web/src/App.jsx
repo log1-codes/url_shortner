@@ -59,8 +59,8 @@ function App() {
     })
 
     if (response.status === 401) {
-      signOut('Session expired. Please log in again.')
-      throw new Error('Unauthorized')
+      signOut('')
+      throw new Error('Session expired. Please log in again.')
     }
 
     const data = await response.json().catch(() => null)
@@ -145,7 +145,7 @@ function App() {
       const data = await apiRequest('/links', { method: 'GET' })
       setLinks(data || [])
     } catch (err) {
-      setAlert(err.message)
+      console.error(err)
     }
   }
 
