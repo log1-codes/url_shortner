@@ -1,65 +1,64 @@
 @charset "UTF-8";
 
-/* ==========================================================================
-   DESIGN TOKENS & SYSTEM FOUNDATION
-   Inspired by Apple, Linear, Stripe, and Vercel design principles.
-   ========================================================================== */
 
 :root {
-  --font-sans: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Neutral Dark Theme Foundation */
-  --bg-app: #09090b;
-  --bg-canvas: #0c0c0e;
-  --bg-surface: #121215;
-  --bg-surface-elevated: #18181c;
-  --bg-surface-hover: #1f1f24;
-  --bg-subtle: rgba(255, 255, 255, 0.03);
-  --bg-subtle-hover: rgba(255, 255, 255, 0.06);
+  --bg-app: #08080a;
+  --bg-canvas: #0a0a0c;
+  --bg-surface: #101013;
+  --bg-surface-elevated: #16161a;
+  --bg-surface-hover: #1c1c21;
+  --bg-subtle: rgba(255, 255, 255, 0.025);
+  --bg-subtle-hover: rgba(255, 255, 255, 0.05);
 
   /* Subtle Hairline Borders */
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-default: rgba(255, 255, 255, 0.09);
-  --border-hover: rgba(255, 255, 255, 0.15);
-  --border-focus: rgba(56, 189, 248, 0.45);
+  --border-subtle: rgba(255, 255, 255, 0.055);
+  --border-default: rgba(255, 255, 255, 0.085);
+  --border-hover: rgba(255, 255, 255, 0.14);
+  --border-focus: rgba(255, 255, 255, 0.32);
 
   /* Typography Colors */
-  --text-primary: #f4f4f5;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
-  --text-faint: #52525b;
+  --text-primary: #f4f4f6;
+  --text-secondary: #96969f;
+  --text-muted: #6c6c75;
+  --text-faint: #48484f;
 
-  /* Accent Color (Refined Sky / Cyan) */
-  --accent: #38bdf8;
-  --accent-hover: #0ea5e9;
-  --accent-subtle: rgba(56, 189, 248, 0.08);
-  --accent-subtle-border: rgba(56, 189, 248, 0.22);
-  --accent-text: #38bdf8;
+  /* Accent — pure monochrome. White does the work color used to do. */
+  --accent: #ffffff;
+  --accent-hover: #e4e4e7;
+  --accent-dim: #d4d4d8;
+  --accent-subtle: rgba(255, 255, 255, 0.06);
+  --accent-subtle-border: rgba(255, 255, 255, 0.16);
+  --accent-text: #f4f4f6;
+  --accent-gradient: linear-gradient(135deg, #ffffff 0%, #d4d4d8 100%);
 
   /* Status Colors */
-  --success: #34d399;
-  --success-subtle: rgba(52, 211, 153, 0.1);
-  --success-border: rgba(52, 211, 153, 0.25);
+  --success: #35d4a0;
+  --success-subtle: rgba(53, 212, 160, 0.1);
+  --success-border: rgba(53, 212, 160, 0.25);
   --error: #f87171;
   --error-subtle: rgba(248, 113, 113, 0.1);
   --error-border: rgba(248, 113, 113, 0.25);
 
   /* Elevation & Shadows */
-  --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.4);
-  --shadow-command: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-elevated: 0 10px 34px rgba(0, 0, 0, 0.45);
+  --shadow-command: 0 24px 60px -18px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.02);
+  --shadow-glow: 0 0 120px rgba(255, 255, 255, 0.05);
 
-  /* Radius Tokens */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  /* Radius Tokens — tightened to three deliberate steps */
+  --radius-sm: 7px;
+  --radius-md: 9px;
+  --radius-lg: 13px;
+  --radius-xl: 18px;
   --radius-full: 9999px;
 
   /* Transitions */
   --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-normal: 160ms;
+  --duration-normal: 150ms;
 }
 
 *, *::before, *::after {
@@ -76,27 +75,36 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-feature-settings: 'ss01' 1, 'cv01' 1;
   scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
+  position: relative;
   background-color: var(--bg-app);
-  background-image: 
-    radial-gradient(ellipse 70% 40% at 50% -10%, rgba(56, 189, 248, 0.05), transparent 70%),
-    linear-gradient(180deg, #09090b 0%, #0c0c0f 100%);
-  background-attachment: fixed;
   color: var(--text-primary);
   line-height: 1.5;
   overflow-x: hidden;
 }
 
-/* ==========================================================================
-   APP SHELL & CONTAINER LAYOUT
-   Clean canvas layout, aligned to a strong grid, no giant dark boxed cages.
-   ========================================================================== */
+/* Signature ambient glow — one deliberate bloom, not scattered gradients */
+body::before {
+  content: '';
+  position: fixed;
+  top: -20%;
+  left: 50%;
+  width: 900px;
+  height: 700px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(255, 255, 255, 0.06), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
 
 .app-shell {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -118,16 +126,15 @@ body {
 
 /* ==========================================================================
    TOP NAVIGATION
-   Refined, minimal, understated with clean typography & subtle active state.
    ========================================================================== */
 
 .topbar-wrapper {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(9, 9, 11, 0.82);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(8, 8, 10, 0.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -135,7 +142,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
+  height: 60px;
 }
 
 .brand-container {
@@ -151,22 +158,21 @@ body {
 }
 
 .brand-glyph {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--accent-gradient);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: border-color var(--duration-normal) var(--ease-snappy), transform var(--duration-normal) var(--ease-snappy);
+  color: #0a0a0c;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 10px rgba(0, 0, 0, 0.35);
+  transition: transform var(--duration-normal) var(--ease-snappy);
 }
 
 .brand-container:hover .brand-glyph {
-  border-color: rgba(56, 189, 248, 0.4);
-  transform: translateY(-1px);
+  transform: translateY(-1px) scale(1.03);
 }
 
 .brand-text-group {
@@ -176,8 +182,8 @@ body {
 
 .brand-name {
   font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  font-weight: 620;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
   line-height: 1.2;
 }
@@ -189,7 +195,6 @@ body {
   line-height: 1.2;
 }
 
-/* Nav Actions & Segmented Navigation */
 .nav-group {
   display: flex;
   align-items: center;
@@ -203,7 +208,7 @@ body {
   padding: 0.4375rem 0.8125rem;
   border-radius: var(--radius-md);
   font-size: 0.875rem;
-  font-weight: 450;
+  font-weight: 460;
   color: var(--text-secondary);
   background: transparent;
   border: 1px solid transparent;
@@ -220,9 +225,9 @@ body {
 
 .nav-link-btn.active {
   color: var(--text-primary);
-  font-weight: 550;
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.08);
+  font-weight: 560;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.07);
 }
 
 .nav-divider {
@@ -239,19 +244,20 @@ body {
   padding: 0.4375rem 0.875rem;
   border-radius: var(--radius-md);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 550;
   cursor: pointer;
   transition: all var(--duration-normal) var(--ease-snappy);
 }
 
 .nav-action-primary {
-  background: var(--text-primary);
-  color: #09090b;
-  border: 1px solid transparent;
+  background: var(--accent-gradient);
+  color: #0a0a0c;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .nav-action-primary:hover {
-  background: #ffffff;
+  background: var(--accent-hover);
   transform: translateY(-1px);
 }
 
@@ -267,7 +273,6 @@ body {
   border-color: rgba(239, 68, 68, 0.15);
 }
 
-/* Mobile Nav Toggle */
 .mobile-nav-toggle {
   display: none;
   align-items: center;
@@ -291,7 +296,6 @@ body {
 
 /* ==========================================================================
    EDITORIAL TYPOGRAPHY HIERARCHY
-   Clean, confident, generous line-height, tight tracking.
    ========================================================================== */
 
 .page-header {
@@ -303,10 +307,10 @@ body {
   align-items: center;
   gap: 0.5rem;
   font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-weight: 620;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
   margin-bottom: 0.75rem;
 }
 
@@ -319,9 +323,9 @@ body {
 
 .page-title {
   font-size: clamp(2rem, 3.5vw, 2.75rem);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.15;
+  font-weight: 680;
+  letter-spacing: -0.04em;
+  line-height: 1.14;
   color: var(--text-primary);
   margin-bottom: 0.75rem;
 }
@@ -334,7 +338,6 @@ body {
   max-width: 600px;
 }
 
-/* Section Header */
 .section-header {
   display: flex;
   align-items: center;
@@ -346,7 +349,7 @@ body {
 
 .section-title {
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: 620;
   letter-spacing: -0.01em;
   color: var(--text-primary);
 }
@@ -358,7 +361,6 @@ body {
 
 /* ==========================================================================
    URL COMMAND SHORTENER INPUT (VISUAL CENTERPIECE)
-   Effortless, premium, prominent action area.
    ========================================================================== */
 
 .command-card {
@@ -368,13 +370,13 @@ body {
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   margin-bottom: 2.75rem;
-  box-shadow: var(--shadow-command);
+  box-shadow: var(--shadow-command), var(--shadow-glow);
   transition: border-color var(--duration-normal) var(--ease-snappy), box-shadow var(--duration-normal) var(--ease-snappy);
 }
 
 .command-card:focus-within {
   border-color: var(--border-focus);
-  box-shadow: 0 20px 45px -12px rgba(56, 189, 248, 0.12);
+  box-shadow: 0 24px 60px -16px rgba(255, 255, 255, 0.1), var(--shadow-glow);
 }
 
 .command-label-row {
@@ -386,7 +388,7 @@ body {
 
 .command-label {
   font-size: 0.8125rem;
-  font-weight: 550;
+  font-weight: 560;
   letter-spacing: -0.01em;
   color: var(--text-secondary);
 }
@@ -409,7 +411,7 @@ body {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   color: var(--text-secondary);
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.055);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
@@ -427,7 +429,7 @@ body {
 
 .command-input-wrapper:focus-within {
   border-color: var(--border-focus);
-  background: #0d0d11;
+  background: #0b0b0e;
 }
 
 .command-icon {
@@ -456,31 +458,31 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: var(--text-primary);
-  color: #09090b;
-  border: none;
+  background: var(--accent-gradient);
+  color: #0a0a0c;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-sm);
   padding: 0.625rem 1.125rem;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 620;
   cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
   transition: all var(--duration-normal) var(--ease-snappy);
   flex-shrink: 0;
 }
 
 .command-submit-btn:hover:not(:disabled) {
-  background: #ffffff;
+  background: var(--accent-hover);
   transform: translateY(-1px);
 }
 
 .command-submit-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
 /* ==========================================================================
    METRICS / STATS ROW
-   Typography-led, lightweight, clean numerical emphasis.
    ========================================================================== */
 
 .metrics-strip {
@@ -521,8 +523,8 @@ body {
 
 .metric-value {
   font-size: 1.75rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 680;
+  letter-spacing: -0.035em;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
   line-height: 1.2;
@@ -533,7 +535,7 @@ body {
   align-items: center;
   gap: 0.375rem;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 620;
   color: var(--success);
 }
 
@@ -547,7 +549,6 @@ body {
 
 /* ==========================================================================
    LINKS LIST & TABLE
-   Sleek modern SaaS data list with one-click copy & graceful truncation.
    ========================================================================== */
 
 .links-container {
@@ -599,9 +600,9 @@ body {
 
 .link-short-anchor {
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: 620;
   letter-spacing: -0.01em;
-  color: var(--accent);
+  color: var(--accent-text);
   text-decoration: none;
   transition: color var(--duration-normal) var(--ease-snappy);
   display: inline-flex;
@@ -610,7 +611,7 @@ body {
 }
 
 .link-short-anchor:hover {
-  color: #7dd3fc;
+  color: #b8afff;
   text-decoration: underline;
 }
 
@@ -622,7 +623,7 @@ body {
   font-weight: 500;
   padding: 0.2rem 0.5rem;
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.045);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
   cursor: pointer;
@@ -630,7 +631,7 @@ body {
 }
 
 .copy-button:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.09);
   color: var(--text-primary);
   border-color: var(--border-default);
 }
@@ -666,7 +667,7 @@ body {
   color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
   padding: 0.25rem 0.625rem;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.035);
   border-radius: var(--radius-full);
   border: 1px solid var(--border-subtle);
 }
@@ -699,7 +700,7 @@ body {
 }
 
 .icon-action-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.07);
   color: var(--text-primary);
   border-color: var(--border-subtle);
 }
@@ -721,7 +722,7 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.035);
   border: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
@@ -732,7 +733,7 @@ body {
 
 .empty-state-title {
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: 620;
   color: var(--text-primary);
   margin-bottom: 0.375rem;
 }
@@ -745,7 +746,6 @@ body {
 
 /* ==========================================================================
    LANDING / HOME PAGE
-   Small eyebrow, large editorial headline, clean 3-col feature row.
    ========================================================================== */
 
 .hero-section {
@@ -755,15 +755,15 @@ body {
 
 .hero-headline {
   font-size: clamp(2.5rem, 5.5vw, 4rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.08;
+  font-weight: 720;
+  letter-spacing: -0.045em;
+  line-height: 1.06;
   color: var(--text-primary);
   margin-bottom: 1.25rem;
 }
 
 .hero-headline-accent {
-  background: linear-gradient(180deg, #ffffff 30%, #a1a1aa 100%);
+  background: linear-gradient(180deg, #ffffff 25%, #a79bf9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -789,22 +789,23 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: var(--text-primary);
-  color: #09090b;
+  background: var(--accent-gradient);
+  color: #0a0a0c;
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: 620;
   padding: 0.75rem 1.375rem;
   border-radius: var(--radius-md);
-  border: 1px solid transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
   text-decoration: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 0.3);
   transition: all var(--duration-normal) var(--ease-snappy);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #ffffff;
+  background: var(--accent-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
 .btn-secondary {
@@ -812,7 +813,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text-primary);
   font-size: 0.9375rem;
   font-weight: 500;
@@ -825,11 +826,10 @@ body {
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.07);
   border-color: var(--border-hover);
 }
 
-/* Feature 3-Column Row */
 .features-container {
   margin-top: 2rem;
   padding-top: 3.5rem;
@@ -856,14 +856,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent);
+  color: var(--accent-text);
   margin-bottom: 1.125rem;
 }
 
 .feature-title {
   font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  font-weight: 620;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
@@ -876,7 +876,6 @@ body {
 
 /* ==========================================================================
    AUTH CARD (LOGIN / SIGNUP)
-   Minimalist, centered, focused auth card with crisp typography.
    ========================================================================== */
 
 .auth-wrapper {
@@ -902,8 +901,8 @@ body {
 
 .auth-title {
   font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  font-weight: 680;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
   margin-bottom: 0.375rem;
 }
@@ -928,7 +927,7 @@ body {
 
 .form-label {
   font-size: 0.8125rem;
-  font-weight: 550;
+  font-weight: 560;
   color: var(--text-secondary);
   letter-spacing: -0.01em;
 }
@@ -948,8 +947,8 @@ body {
 
 .form-input:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
-  background: #0c0c0e;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+  background: #0b0b0e;
 }
 
 .form-input::placeholder {
@@ -983,13 +982,12 @@ body {
 }
 
 .auth-switch-highlight {
-  color: var(--accent);
-  font-weight: 550;
+  color: var(--accent-text);
+  font-weight: 560;
 }
 
 /* ==========================================================================
    ACCOUNT PROFILE & SETTINGS SECTIONS
-   Clean information layouts, sections, key-value rows, subtle separators.
    ========================================================================== */
 
 .settings-layout {
@@ -1002,8 +1000,8 @@ body {
 
 .info-section-title {
   font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-weight: 620;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: 1rem;
@@ -1057,7 +1055,7 @@ body {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
   color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.035);
   padding: 0.2rem 0.5rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
@@ -1086,7 +1084,6 @@ body {
 
 /* ==========================================================================
    TOAST / ALERT NOTIFICATION
-   Smoothly animated, non-intrusive floating feedback.
    ========================================================================== */
 
 .toast-container {
@@ -1095,7 +1092,7 @@ body {
   right: 1.5rem;
   z-index: 100;
   max-width: 380px;
-  animation: toastSlideUp 220ms var(--ease-snappy) forwards;
+  animation: toastSlideUp 200ms var(--ease-snappy) forwards;
 }
 
 @keyframes toastSlideUp {
@@ -1115,7 +1112,7 @@ body {
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.8125rem 1rem;
-  background: #18181b;
+  background: #17171b;
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-elevated);
@@ -1160,9 +1157,17 @@ body {
   }
 }
 
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* ==========================================================================
    RESPONSIVE DESIGN BREAKPOINTS
-   1440px+, 1280px, 1024px, 768px, 480px, 375px
    ========================================================================== */
 
 @media (max-width: 840px) {
@@ -1178,6 +1183,11 @@ body {
 }
 
 @media (max-width: 768px) {
+  body::before {
+    width: 100%;
+    height: 420px;
+  }
+
   .app-container {
     padding: 0 1rem;
   }

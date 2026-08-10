@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ToastNotification } from '../components/ToastNotification'
 import { ArrowRight } from 'lucide-react'
 
-export const Signup = () => {
+export const Login = () => {
   const {
     email,
     setEmail,
@@ -12,7 +12,7 @@ export const Signup = () => {
     message,
     setMessage,
     loading,
-    handleSignup,
+    handleLogin,
   } = useAppContext()
   const navigate = useNavigate()
 
@@ -26,15 +26,15 @@ export const Signup = () => {
             <section className="auth-box">
               <div className="auth-header-group">
                 <div className="eyebrow">
-                  <span className="eyebrow-pill">Create account</span>
+                  <span className="eyebrow-pill">Welcome back</span>
                 </div>
-                <h1 className="auth-title">Create your account</h1>
+                <h1 className="auth-title">Sign in</h1>
                 <p className="auth-desc">
-                  Start shortening URLs and tracking redirects in seconds.
+                  Enter your credentials to access your dashboard and manage links.
                 </p>
               </div>
 
-              <form className="auth-form" onSubmit={handleSignup}>
+              <form className="auth-form" onSubmit={handleLogin}>
                 <div className="form-group">
                   <label className="form-label" htmlFor="auth-email">
                     Email address
@@ -74,11 +74,11 @@ export const Signup = () => {
                   {loading ? (
                     <>
                       <div className="spinner" />
-                      <span>Creating account...</span>
+                      <span>Signing in...</span>
                     </>
                   ) : (
                     <>
-                      <span>Create account</span>
+                      <span>Sign in</span>
                       <ArrowRight size={15} />
                     </>
                   )}
@@ -89,10 +89,10 @@ export const Signup = () => {
                 <button
                   type="button"
                   className="auth-switch-btn"
-                  onClick={() => navigate('/login')}
+                  onClick={() => navigate('/signup')}
                 >
-                  Already have an account?{' '}
-                  <span className="auth-switch-highlight">Sign in</span>
+                  Don&apos;t have an account?{' '}
+                  <span className="auth-switch-highlight">Create an account</span>
                 </button>
               </div>
             </section>

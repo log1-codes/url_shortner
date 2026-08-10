@@ -1,11 +1,21 @@
 import React, { useState } from 'react'
 import { Link2, LogOut, LayoutDashboard, User, Settings, ArrowRight, Menu, X } from 'lucide-react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useAppContext } from '../context/AppContext'
 
-export function TopNav({ page, setPage, isAuthenticated, signOut }) {
+export function TopNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { isAuthenticated, signOut } = useAppContext()
+
+  // Map pathname to page name for active state
+  const page = location.pathname === '/' ? 'home'
+    : location.pathname.replace('/', '')
 
   const handleNav = (targetPage) => {
-    setPage(targetPage)
+    const path = targetPage === 'home' ? '/' : `/${targetPage}`
+    navigate(path)
     setMobileMenuOpen(false)
   }
 
