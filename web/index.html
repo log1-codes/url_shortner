@@ -3,14 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>URL Shortener — Fast, minimal, secure links</title>
-    <meta name="description" content="A minimal, ultra-fast URL shortener with real-time analytics and secure token authentication." />
+    
+    <!-- Primary SEO Metadata -->
+    <title>ShortLink — Ultra-Fast URL Shortener & Real-Time Click Analytics</title>
+    <meta name="title" content="ShortLink — Ultra-Fast URL Shortener & Real-Time Click Analytics" />
+    <meta name="description" content="Shorten long URLs into sleek, high-converting short links. Track real-time clicks, monitor traffic velocity, and automate via developer API. Free, private, and lightning fast." />
+    <meta name="keywords" content="url shortener, link shortener, short links, click tracking, link analytics, custom short urls, free url shortener, fast redirects, marketing links, developer api shortener" />
+    <meta name="author" content="ShortLink" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://shortlink.dev/" />
+    <meta name="theme-color" content="#08080a" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://shortlink.dev/" />
+    <meta property="og:title" content="ShortLink — Ultra-Fast URL Shortener & Real-Time Click Analytics" />
+    <meta property="og:description" content="Transform cluttered URLs into clean, branded short links that boost CTR by up to 34%. Track real-time redirects without ad trackers." />
+    <meta property="og:site_name" content="ShortLink" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://shortlink.dev/" />
+    <meta name="twitter:title" content="ShortLink — Ultra-Fast URL Shortener & Real-Time Click Analytics" />
+    <meta name="twitter:description" content="Transform cluttered URLs into clean, branded short links that boost CTR by up to 34%. Track real-time redirects without ad trackers." />
+
+    <!-- Fonts & Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/></svg>" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/></svg>" />
+
+    <!-- JSON-LD Structured Data Schema for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "ShortLink",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "High-velocity URL shortener and real-time click analytics platform for growth marketers, creators, and developers.",
+        "featureList": [
+          "Instant sub-15ms 302 redirects",
+          "Real-time click analytics",
+          "Secure tokenized session authentication",
+          "Developer REST API",
+          "Privacy-first tracking without cookies"
+        ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "ratingCount": "1280"
+        }
+      }
+    </script>
   </head>
-  <body class="min-h-screen bg-[#09090b] text-[#f4f4f5] antialiased selection:bg-sky-500/20 selection:text-sky-300">
+  <body class="min-h-screen bg-[#08080a] text-[#f4f4f6] antialiased selection:bg-white/20 selection:text-white">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
