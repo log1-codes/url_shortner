@@ -1,5 +1,6 @@
 import { useAppContext } from '../context/AppContext'
 import { ToastNotification } from '../components/ToastNotification'
+import { User } from 'lucide-react'
 
 export const Profile = () => {
   const {
@@ -10,77 +11,105 @@ export const Profile = () => {
     totalRedirects,
   } = useAppContext()
 
+  const averageClicks = links.length ? Math.round(totalRedirects / links.length) : 0
+
   return (
-    <div className="app-shell">
+    <div className="relative min-h-screen flex flex-col">
       <ToastNotification message={message} onDismiss={() => setMessage('')} />
 
-      <main className="app-main">
-        <div className="app-container">
-          <div className="settings-layout">
-            <header className="page-header">
-              <div className="eyebrow">
-                <span className="eyebrow-pill">Account</span>
+      <main className="flex-1 pt-8 pb-20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-10">
+          
+          {/* Header */}
+          <header className="space-y-2">
+            <div className="inline-flex items-center gap-1.5 bg-white/[0.04] border border-white/[0.08] px-2.5 py-1 rounded-full text-xs text-zinc-400">
+              <User size={13} className="text-sky-400" />
+              <span>Account Profile</span>
+              <span className="text-zinc-600">•</span>
+              <span className="text-zinc-500">Tier: Free Core Access</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              Account Overview
+            </h1>
+            <p className="text-sm text-zinc-400">
+              Review your registered account profile, credentials, and cumulative link campaign activity.
+            </p>
+          </header>
+
+          {/* Identity & Credentials */}
+          <section className="space-y-3">
+            <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+              Identity &amp; Credentials
+            </h2>
+            <div className="bg-[#101013] border border-white/[0.08] rounded-2xl p-5 divide-y divide-white/[0.06] space-y-4">
+              
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-0">
+                <div>
+                  <div className="text-sm font-medium text-zinc-100">Email Address</div>
+                  <div className="text-xs text-zinc-400">Primary login identity for dashboard access</div>
+                </div>
+                <span className="text-sm font-medium text-zinc-200">{profile?.email || '—'}</span>
               </div>
-              <h1 className="page-title">Your account</h1>
-              <p className="page-subtitle">
-                Review your registered account profile, credentials, and link activity.
-              </p>
-            </header>
 
-            <section className="info-section">
-              <h2 className="info-section-title">Account overview</h2>
-              <div className="info-card">
-                <div className="info-row">
-                  <div className="info-row-left">
-                    <span className="info-label">Email address</span>
-                    <span className="info-desc">Primary login identity</span>
-                  </div>
-                  <span className="info-value">{profile?.email || '—'}</span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-4">
+                <div>
+                  <div className="text-sm font-medium text-zinc-100">Account Identifier</div>
+                  <div className="text-xs text-zinc-400">Unique account database key</div>
                 </div>
-
-                <div className="info-row">
-                  <div className="info-row-left">
-                    <span className="info-label">Account ID</span>
-                    <span className="info-desc">Unique identifier</span>
-                  </div>
-                  <span className="info-value-mono">{profile?.id || '—'}</span>
-                </div>
-
-                <div className="info-row">
-                  <div className="info-row-left">
-                    <span className="info-label">Member since</span>
-                    <span className="info-desc">Account registration date</span>
-                  </div>
-                  <span className="info-value">
-                    {profile?.created_at
-                      ? new Date(profile.created_at).toLocaleString()
-                      : '—'}
-                  </span>
-                </div>
+                <span className="font-mono text-xs text-zinc-400 bg-black/40 border border-white/[0.08] px-2.5 py-1 rounded-lg">
+                  {profile?.id || '—'}
+                </span>
               </div>
-            </section>
 
-            <section className="info-section">
-              <h2 className="info-section-title">Usage statistics</h2>
-              <div className="info-card">
-                <div className="info-row">
-                  <div className="info-row-left">
-                    <span className="info-label">Total short links</span>
-                    <span className="info-desc">Active links created</span>
-                  </div>
-                  <span className="info-value">{links.length}</span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-4">
+                <div>
+                  <div className="text-sm font-medium text-zinc-100">Member Since</div>
+                  <div className="text-xs text-zinc-400">Account registration timestamp</div>
                 </div>
-
-                <div className="info-row">
-                  <div className="info-row-left">
-                    <span className="info-label">Total redirects</span>
-                    <span className="info-desc">Cumulative clicks recorded</span>
-                  </div>
-                  <span className="info-value">{totalRedirects}</span>
-                </div>
+                <span className="text-xs text-zinc-300">
+                  {profile?.created_at
+                    ? new Date(profile.created_at).toLocaleString()
+                    : 'Active Member'}
+                </span>
               </div>
-            </section>
-          </div>
+
+            </div>
+          </section>
+
+          {/* Performance Metrics */}
+          <section className="space-y-3">
+            <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+              Cumulative Performance Metrics
+            </h2>
+            <div className="bg-[#101013] border border-white/[0.08] rounded-2xl p-5 divide-y divide-white/[0.06] space-y-4">
+              
+              <div className="flex items-center justify-between gap-2 pt-0">
+                <div>
+                  <div className="text-sm font-medium text-zinc-100">Total Short Links Created</div>
+                  <div className="text-xs text-zinc-400">Active redirect destinations</div>
+                </div>
+                <span className="text-base font-bold text-zinc-100">{links.length}</span>
+              </div>
+
+              <div className="flex items-center justify-between gap-2 pt-4">
+                <div>
+                  <div className="text-sm font-medium text-zinc-100">Total Redirects (Clicks)</div>
+                  <div className="text-xs text-zinc-400">Cumulative visitor engagements</div>
+                </div>
+                <span className="text-base font-bold text-emerald-400">{totalRedirects}</span>
+              </div>
+
+              <div className="flex items-center justify-between gap-2 pt-4">
+                <div>
+                  <div className="text-sm font-medium text-zinc-100">Average Clicks Per Link</div>
+                  <div className="text-xs text-zinc-400">Campaign engagement efficiency</div>
+                </div>
+                <span className="text-base font-bold text-sky-400">{averageClicks}</span>
+              </div>
+
+            </div>
+          </section>
+
         </div>
       </main>
     </div>

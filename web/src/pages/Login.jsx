@@ -1,7 +1,7 @@
 import { useAppContext } from '../context/AppContext'
 import { useNavigate } from 'react-router-dom'
 import { ToastNotification } from '../components/ToastNotification'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Zap, ShieldCheck, BarChart3, Sparkles } from 'lucide-react'
 
 export const Login = () => {
   const {
@@ -17,86 +17,139 @@ export const Login = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="app-shell">
+    <div className="relative min-h-screen flex flex-col">
       <ToastNotification message={message} onDismiss={() => setMessage('')} />
 
-      <main className="app-main">
-        <div className="app-container">
-          <div className="auth-wrapper">
-            <section className="auth-box">
-              <div className="auth-header-group">
-                <div className="eyebrow">
-                  <span className="eyebrow-pill">Welcome back</span>
+      <main className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6">
+        <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          
+          {/* Left Column: Value & Trust */}
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-1.5 bg-white/[0.04] border border-white/[0.08] px-2.5 py-1 rounded-full text-xs text-zinc-400">
+              <Sparkles size={12} className="text-purple-400" />
+              <span>ShortLink Intelligence</span>
+            </div>
+
+            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug">
+              Manage high-converting short links with zero latency.
+            </h2>
+
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+              Sign in to monitor real-time redirects, create trackable marketing links, and access your developer API token.
+            </p>
+
+            <div className="space-y-3.5 pt-2">
+              <div className="flex items-start gap-3">
+                <div className="w-7 h-7 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white shrink-0">
+                  <Zap size={14} />
                 </div>
-                <h1 className="auth-title">Sign in</h1>
-                <p className="auth-desc">
-                  Enter your credentials to access your dashboard and manage links.
-                </p>
+                <div>
+                  <h4 className="text-xs font-semibold text-zinc-200">Sub-15ms Redirect Latency</h4>
+                  <p className="text-[11px] text-zinc-400">High-velocity Go core ensures zero traffic loss.</p>
+                </div>
               </div>
 
-              <form className="auth-form" onSubmit={handleLogin}>
-                <div className="form-group">
-                  <label className="form-label" htmlFor="auth-email">
-                    Email address
-                  </label>
-                  <input
-                    id="auth-email"
-                    type="email"
-                    className="form-input"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@example.com"
-                    required
-                    autoFocus
-                  />
+              <div className="flex items-start gap-3">
+                <div className="w-7 h-7 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white shrink-0">
+                  <BarChart3 size={14} />
                 </div>
-
-                <div className="form-group">
-                  <label className="form-label" htmlFor="auth-password">
-                    Password
-                  </label>
-                  <input
-                    id="auth-password"
-                    type="password"
-                    className="form-input"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    required
-                  />
+                <div>
+                  <h4 className="text-xs font-semibold text-zinc-200">Live Click Attribution</h4>
+                  <p className="text-[11px] text-zinc-400">Instant counter updates without ad cookies.</p>
                 </div>
-
-                <button
-                  type="submit"
-                  className="btn-primary auth-submit-btn"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <>
-                      <div className="spinner" />
-                      <span>Signing in...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Sign in</span>
-                      <ArrowRight size={15} />
-                    </>
-                  )}
-                </button>
-              </form>
-
-              <div className="auth-switch-row">
-                <button
-                  type="button"
-                  className="auth-switch-btn"
-                  onClick={() => navigate('/signup')}
-                >
-                  Don&apos;t have an account?{' '}
-                  <span className="auth-switch-highlight">Create an account</span>
-                </button>
               </div>
-            </section>
+
+              <div className="flex items-start gap-3">
+                <div className="w-7 h-7 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white shrink-0">
+                  <ShieldCheck size={14} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-zinc-200">Cryptographic Token Security</h4>
+                  <p className="text-[11px] text-zinc-400">Your links and credentials remain safely encrypted.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 pt-2 flex-wrap text-[11px] text-zinc-400">
+              <span className="bg-white/[0.04] border border-white/[0.08] px-2.5 py-1 rounded-full text-emerald-400 font-semibold">99.99% Uptime</span>
+              <span className="bg-white/[0.04] border border-white/[0.08] px-2.5 py-1 rounded-full text-sky-400 font-semibold">+34% Avg CTR</span>
+              <span className="bg-white/[0.04] border border-white/[0.08] px-2.5 py-1 rounded-full text-purple-400 font-semibold">0ms Ad Delay</span>
+            </div>
           </div>
+
+          {/* Right Column: High-Converting Auth Form */}
+          <div className="bg-[#101013] border border-white/[0.09] rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6">
+            <div className="space-y-1.5">
+              <span className="text-[11px] font-semibold text-purple-400 uppercase tracking-wider">Welcome Back</span>
+              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Sign in to ShortLink</h1>
+              <p className="text-xs text-zinc-400">
+                Enter your credentials to access your link analytics dashboard.
+              </p>
+            </div>
+
+            <form className="space-y-4" onSubmit={handleLogin}>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-zinc-300" htmlFor="auth-email">
+                  Email address
+                </label>
+                <input
+                  id="auth-email"
+                  type="email"
+                  className="w-full bg-[#0a0a0c] border border-white/[0.08] focus:border-white/30 focus:ring-2 focus:ring-white/10 rounded-xl px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 outline-none transition-all"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@company.com"
+                  required
+                  autoFocus
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-zinc-300" htmlFor="auth-password">
+                  Password
+                </label>
+                <input
+                  id="auth-password"
+                  type="password"
+                  className="w-full bg-[#0a0a0c] border border-white/[0.08] focus:border-white/30 focus:ring-2 focus:ring-white/10 rounded-xl px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 outline-none transition-all"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full inline-flex items-center justify-center gap-2 bg-white text-zinc-950 font-semibold px-4 py-2.5 rounded-xl text-sm hover:bg-zinc-200 transition-all disabled:opacity-50 cursor-pointer shadow-sm"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <div className="spinner" />
+                    <span>Signing in...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Sign In to Dashboard</span>
+                    <ArrowRight size={15} />
+                  </>
+                )}
+              </button>
+            </form>
+
+            <div className="pt-2 text-center border-t border-white/[0.06]">
+              <button
+                type="button"
+                className="text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                onClick={() => navigate('/signup')}
+              >
+                Don&apos;t have an account?{' '}
+                <span className="font-semibold text-white underline underline-offset-2">Create a free account</span>
+              </button>
+            </div>
+          </div>
+
         </div>
       </main>
     </div>

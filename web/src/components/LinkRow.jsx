@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Copy, Check, ExternalLink, BarChart2, Calendar } from 'lucide-react'
+import { Copy, Check, ExternalLink, BarChart2 } from 'lucide-react'
 
 export function LinkRow({ link }) {
   const [copied, setCopied] = useState(false)
@@ -39,66 +39,72 @@ export function LinkRow({ link }) {
     : 'Recently'
 
   return (
-    <article className="link-row">
-      <div className="link-main-col">
-        <div className="link-short-group">
+    <article className="bg-[#101013] border border-white/[0.08] hover:border-white/20 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all group">
+      
+      {/* Short Link & Original Destination */}
+      <div className="space-y-1.5 min-w-0 flex-1">
+        <div className="flex items-center gap-2 flex-wrap">
           <a
-            className="link-short-anchor"
             href={fullShortUrl}
             target="_blank"
             rel="noreferrer"
+            className="inline-flex items-center gap-1.5 font-mono font-semibold text-xs sm:text-sm text-zinc-100 hover:text-white hover:underline truncate"
             title="Open short link"
           >
             <span>{fullShortUrl}</span>
-            <ExternalLink size={12} className="opacity-60" />
+            <ExternalLink size={12} className="text-zinc-500" />
           </a>
 
           <button
             type="button"
-            className={`copy-button ${copied ? 'copied' : ''}`}
+            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-sans transition-all cursor-pointer ${
+              copied
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                : 'bg-white/[0.06] hover:bg-white/[0.12] text-zinc-300 border border-white/10'
+            }`}
             onClick={handleCopy}
             title="Copy short link to clipboard"
           >
             {copied ? (
               <>
-                <Check size={12} />
+                <Check size={11} className="text-emerald-400" />
                 <span>Copied</span>
               </>
             ) : (
               <>
-                <Copy size={12} />
+                <Copy size={11} />
                 <span>Copy</span>
               </>
             )}
           </button>
         </div>
 
-        <p className="link-dest-url" title={link.original_url}>
+        <p className="text-xs text-zinc-400 truncate max-w-lg" title={link.original_url}>
           {link.original_url}
         </p>
       </div>
 
-      <div className="link-meta-col">
-        <div className="link-clicks-badge" title="Total redirects">
-          <BarChart2 size={13} className="text-zinc-400" />
-          <span>{link.clicks || 0} redirects</span>
+      {/* Stats & Meta */}
+      <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-white/[0.06]">
+        <div className="inline-flex items-center gap-1.5 bg-white/[0.04] border border-white/[0.08] px-2.5 py-1 rounded-full text-xs text-zinc-300" title="Total Redirects">
+          <BarChart2 size={12} className="text-zinc-400" />
+          <span className="font-semibold text-emerald-400">{link.clicks || 0}</span>
+          <span className="text-zinc-500 text-[11px]">clicks</span>
         </div>
 
-        <div className="link-date" title={`Created: ${new Date(link.created_at).toLocaleString()}`}>
+        <span className="text-[11px] text-zinc-500">
           {formattedDate}
-        </div>
+        </span>
 
-        <div className="link-actions-group">
-          <a
-            href={fullShortUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="icon-action-btn"
-            title="Visit redirect destination"
-          >
-            <ExternalLink size={14} />
-          </a>
-        </div>
+        <a
+          href={fullShortUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+          title="Visit destination"
+        >
+          <ExternalLink size={14} />
+        </a>
       </div>
     </article>
   )
