@@ -5,10 +5,13 @@ A lightweight URL shortener built with Go and PostgreSQL. Submit a long URL, get
 ## Features
 
 - Shorten URLs via a JSON REST API
-- Redirect short codes to the original URL
-- Persistent storage with PostgreSQL
-- Automatic database table creation on startup
-- Local development setup with Docker Compose
+- Redirect short codes to the original URL with sub-15ms latency
+- IP-based Token Bucket Rate Limiting (20 req/s, 40 burst) with automated memory cleanup
+- JWT Authentication & Secure Session Management
+- Real-time click attribution & link analytics
+- Persistent storage with PostgreSQL 16
+- Automatic database migrations on startup
+- Local development setup with Docker Compose & Air hot reload
 
 ## Tech Stack
 

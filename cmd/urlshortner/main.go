@@ -9,6 +9,8 @@ import (
 	"syscall"
 	"time"
 
+	"golang.org/x/time/rate"
+
 	"url-shortner/internal/app"
 	"url-shortner/internal/store"
 )
@@ -21,6 +23,9 @@ func main() {
 	if len(secret) < 32 {
 		log.Fatal("JWT_SECRET must be at least 32 characters")
 	}
+
+	rateLimiter := app.NewIPRateLimiter(rate.Limit(20), 40, 5*time.Minute)
+	defer rateLimiter.Stop()
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/signup", app.SignupHandler(secret))
@@ -43,9 +48,11 @@ func main() {
 		w.Write([]byte("URL shortener backend is running"))
 	})
 
+	handler := app.CORSMiddleware(app.RateLimitMiddleware(rateLimiter)(mux))
+
 	server := &http.Server{
 		Addr:              ":3000",
-		Handler:           app.CORSMiddleware(mux),
+		Handler:           handler,
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       10 * time.Second,
 		WriteTimeout:      15 * time.Second,
@@ -53,7 +60,7 @@ func main() {
 	}
 
 	go func() {
-		log.Println("Starting server on port 3000")
+		log.Println("Starting server on port 3000 (Rate limiting enabled: 20 req/s, 40 burst)")
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatal(err)
 		}
