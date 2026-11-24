@@ -2,6 +2,8 @@
 
 A lightweight URL shortener built with Go and PostgreSQL. Submit a long URL, get an 8-character short code, and redirect visitors to the original link.
 
+**Live demo:** [surl.anurag.engineer](https://surl.anurag.engineer)
+
 ## Features
 
 - Shorten URLs via a JSON REST API
